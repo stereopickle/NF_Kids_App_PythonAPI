@@ -12,3 +12,32 @@ This script trains the model and return the model.
 
 """
 
+import pandas as pd
+import numpy as np
+
+# load dataset
+# load description and labels (symptoms)
+
+
+
+# data preprocessing
+
+
+
+
+# classification model
+
+
+
+
+
+# Serialization 
+
+
+
+
+# Save column names
+
+
+
+
