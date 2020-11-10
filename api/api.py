@@ -22,7 +22,7 @@ Based on descriptions of symptoms, our goal is to provide
 possible development so parents can be aware of what to look out for.
 
 Our model will be trained as multi-label classifier on text descriptions
-of each possible development. (need to collect data)
+of each possible development. 
 
 Below pipeline will do the following: 
     1. retrieve the text log when '/completelog' is called.
@@ -33,35 +33,29 @@ Below pipeline will do the following:
 """
 
 
+@app.route('/classify', methods = ['POST'])
+def classify():
+    if classifier: 
+        try: 
+            # run prediction
+            return jsonify({ 'class': classes, 
+                             'probability': probability })
+    else: 
+        return ('No Model Found')
 
 
-dat = [
-       {'id': 0, 
-	'prop1': 'test', 
-	'prop2': 'test2', 
-	'prop3': 'test3'
-	},
-	{'id': 1, 
-	'prop1': 'test1-1', 
-	'prop2': 'test1-2', 
-	'prop3': 'test1-3'
-	},
-	{'id': 2,
-	'prop1': 'test2-1',
-	'prop2': 'test2-2', 
-	'prop3': 'test2-3'
-	}
-]
+if __name__ == '__main__':
+    
+    try: 
+        classifier = model.load('model')
+        print ('model successfully loaded')
+    except: 
+        print ('model failed to load')
+    try: 
+        c_columns = pickle.load('columns.pkl') 
+        print ('columns successfully loaded')
+    except: 
+        print ('columns failed to load')
+        
+    app.run()
 
-@app.route('/', methods = ['GET'])
-
-def home():
-	return '<p>Test Homepage</p>'
-
-# return 
-@app.route('/api/v1/resources/data/test', methods = ['GET'])
-
-def api_test():
-       return fl.jsonify(dat)
-
-app.run()
