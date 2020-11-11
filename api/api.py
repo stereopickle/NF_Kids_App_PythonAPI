@@ -6,12 +6,44 @@
 """
 
 from flask import Flask, request, jsonify
+from flask_restful import Resource, Api
+
+from sqlalchemy import create_engine
+
+
 import joblib
 from nlp_model import preprocess
+
+
+
+db_connect = create_engine('DATABASE LOCATION')
 
 # defining api
 app = Flask(__name__)
 app.config["DEBUG"] = True
+
+api = Api(app)
+
+"""
+## retrieving necessary data from the database  
+For prototype, we need to call ...
+1. id, name from symptoms table
+2. full symptom_relations table
+
+"""
+class Symptoms(Resource):
+    def get(self):
+        conn = db_connect.connect()
+        q = conn.execute("SELECT id, name FROM symptoms;")
+        result = {'data': [dict(zip(tuple (q.keys()) ,i)) for i in q.cursor]}
+        return jsonify(result)
+
+class Symptoms_Relation(Resource):
+    def get(self):
+        conn = db_connect.connect()
+        q = conn.execute("SELECT * FROM symptoms_relation;")
+        result = {'data': [dict(zip(tuple (q.keys()) ,i)) for i in q.cursor]}
+        return jsonify(result)
 
 
 """
@@ -26,6 +58,7 @@ to the front-end.
 
 @app.route('/logresult', methods = ['POST'])
 def logresult():
+    text_input = preprocess(text)
     if classifier: 
         try: 
             # run nlp
