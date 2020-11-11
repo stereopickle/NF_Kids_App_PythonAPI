@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 @author: stereopickle / Eunjoo Byeon
-This script contains Python API
+
 """
 
 from flask import Flask, request, jsonify
-from sklearn.externals import joblib
-
+import joblib
+from nlp_model import preprocess
 
 # defining api
 app = Flask(__name__)
@@ -15,29 +15,20 @@ app.config["DEBUG"] = True
 
 
 """
-Multi-label classification of symptoms
+/logresult takes the text, figures out what NF1 related symptoms are present
+then return these symptoms and highly correlated potential conditions.
 
-There are many ways NF1 can develop and create complications.
-Based on descriptions of symptoms, our goal is to provide
-possible development so parents can be aware of what to look out for.
-
-Our model will be trained as multi-label classifier on text descriptions
-of each possible development. 
-
-Below pipeline will do the following: 
-    1. retrieve the text log when '/completelog' is called.
-    2. Preprocess text log
-    3. Make prediction using multi-label classifier
-    4. Return probability of each label
+For the prototype, we won't send the extracted symptoms back to database
+Instead we will just output the symptom and target condition
+to the front-end.
     
 """
 
-
-@app.route('/classify', methods = ['POST'])
-def classify():
+@app.route('/logresult', methods = ['POST'])
+def logresult():
     if classifier: 
         try: 
-            # run prediction
+            # run nlp
             return jsonify({ 'class': classes, 
                              'probability': probability })
     else: 
