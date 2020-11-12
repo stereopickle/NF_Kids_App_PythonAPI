@@ -12,12 +12,12 @@ For the prototype purpose, we are not training model on the fly. So currently it
 For this prototype purpose, directory structure is as below...   
 
 ├── api  
-│   ├── api.py (contains python api)  
-│   └── scripts.py (contains all processing functions)   
+│...├── api.py (contains python api)  
+│...└── scripts.py (contains all processing functions)   
 ├── data   
-│   ├── keys.csv (in db: symptoms table)   
-│   └── symptom_relations.csv (in db: symptoms_relation table)   
+│...├── keys.csv (in db: symptoms table)   
+│...└── symptom_relations.csv (in db: symptoms_relation table)   
 └── model   
-    ├── model.pkl (pickled model)   
-    └── symptom_vectors.pkl (pickled average word vectors for symptoms)   
+....├── model.pkl (pickled model)   
+....└── symptom_vectors.pkl (pickled average word vectors for symptoms)   
 
