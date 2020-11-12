@@ -21,25 +21,15 @@ For this prototype purpose, directory structure is as below...
 ....├── model.pkl (pickled model)   
 ....└── symptom_vectors.pkl (pickled average word vectors for symptoms)   
 ```bash
-├── 001.EDA.ipynb
+├── 001.EDA.ipynb (explains the overall model building process)
 ├── README.md
 ├── api
-│   ├── __pycache__
-│   │   └── scripts.cpython-37.pyc
-│   ├── api.py
-│   └── scripts.py
+│   ├── api.py (contains python api)   
+│   └── scripts.py (contains all processing functions)   
 ├── data
-│   ├── NF\ Registry\ NF1\ 092420\ v2.xls
-│   ├── keys.csv
-│   ├── medical_transcription_samples.csv
-│   ├── symptom_relations.csv
-│   └── symptoms_existing_data.csv
-├── database
-│   └── symptoms.db
-├── model
-│   ├── model.pkl
-│   ├── symptom_vectors.pkl
-│   ├── word2vec_norm.model
-│   └── word2vec_norm.model.vectors.npy
-└── target_symptom_vector_keys.pkl
+│   ├── keys.csv (in db: symptoms table)   
+│   └── symptom_relations.csv (in db: symptoms_relation table)   
+└── model
+    ├── model.pkl (pickled model)   
+    └── symptom_vectors.pkl (pickled average word vectors for symptoms)   
 ```
