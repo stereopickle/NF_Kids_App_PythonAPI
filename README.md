@@ -20,7 +20,7 @@ For this prototype purpose, directory structure is as below...
 └── model   
 ....├── model.pkl (pickled model)   
 ....└── symptom_vectors.pkl (pickled average word vectors for symptoms)   
-
+```bash
 ├── 001.EDA.ipynb
 ├── README.md
 ├── api
@@ -42,3 +42,4 @@ For this prototype purpose, directory structure is as below...
 │   ├── word2vec_norm.model
 │   └── word2vec_norm.model.vectors.npy
 └── target_symptom_vector_keys.pkl
+```
