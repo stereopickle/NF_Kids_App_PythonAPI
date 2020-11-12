@@ -11,8 +11,8 @@ For the prototype purpose, we are not training model on the fly. So currently it
 
 For this prototype purpose, directory structure is as below...   
 
-├── api
-│   ├── api.py (contains python api)
+├── api  
+│   ├── api.py (contains python api)  
 │   └── scripts.py (contains all processing functions)   
 ├── data   
 │   ├── keys.csv (in db: symptoms table)   
