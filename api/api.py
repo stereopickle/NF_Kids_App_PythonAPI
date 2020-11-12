@@ -6,31 +6,31 @@
 """
 
 from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
-
-from sqlalchemy import create_engine
-
+#from flask_restful import Resource, Api
+#from sqlalchemy import create_engine
 
 import joblib
-from nlp_model import preprocess
+import traceback
+import pandas as pd
 
+from scripts import preprocess, identify_symptom, return_symptom_id
+from scripts import high_corr_target, return_names
 
-
-db_connect = create_engine('DATABASE LOCATION')
-
-# defining api
-app = Flask(__name__)
-app.config["DEBUG"] = True
-
-api = Api(app)
 
 """
 ## retrieving necessary data from the database  
-For prototype, we need to call ...
+When we actively send update back to database, we need to call
+
 1. id, name from symptoms table
 2. full symptom_relations table
 
+For now, I'll directly call the files.
+
 """
+
+"""
+db_connect = create_engine('DATABASE LOCATION')
+
 class Symptoms(Resource):
     def get(self):
         conn = db_connect.connect()
@@ -44,6 +44,14 @@ class Symptoms_Relation(Resource):
         q = conn.execute("SELECT * FROM symptoms_relation;")
         result = {'data': [dict(zip(tuple (q.keys()) ,i)) for i in q.cursor]}
         return jsonify(result)
+"""
+
+
+# defining api
+app = Flask(__name__)
+app.config["DEBUG"] = True
+
+
 
 
 """
@@ -58,28 +66,44 @@ to the front-end.
 
 @app.route('/logresult', methods = ['POST'])
 def logresult():
-    text_input = preprocess(text)
-    if classifier: 
+    if model: 
         try: 
-            # run nlp
-            return jsonify({ 'class': classes, 
-                             'probability': probability })
+            input_ = request.json
+            text = input_[0]['log']
+            #text_input = preprocess(text)
+            result = identify_symptom(text, symptom_vectors, model)
+            result_symptom_id = return_symptom_id(result, Symptoms)
+            target = high_corr_target(result_symptom_id, 
+                                      Symptoms_Relation)
+            output = return_names(target, Symptoms)
+            
+            return jsonify({ 'estimated_symptoms': result, 'targets': output })
+        
+        except:
+            return jsonify({'trace': traceback.format_exc()})
     else: 
         return ('No Model Found')
 
 
 if __name__ == '__main__':
+  
+    # load data
+    Symptoms_Relation = pd.read_csv('../data/symptom_relations.csv', index_col= 0)
+    print('Symptoms_Relation loaded')
     
-    try: 
-        classifier = model.load('model')
-        print ('model successfully loaded')
-    except: 
-        print ('model failed to load')
-    try: 
-        c_columns = pickle.load('columns.pkl') 
-        print ('columns successfully loaded')
-    except: 
-        print ('columns failed to load')
-        
+    Symptoms = pd.read_csv('../data/keys.csv', index_col= 0)
+    print('Symptoms loaded')
+
+    symptom_names = Symptoms.symptom.values
+      
+    
+    # load model
+    model = joblib.load('../model/model.pkl')
+    print('model loaded')
+    
+    # load symptom vectors
+    symptom_vectors = joblib.load('../model/symptom_vectors.pkl')
+    print('symptom_vectors loaded')
+
     app.run()
 
