@@ -9,11 +9,9 @@ We intend to build a NLP model that outputs potential complications based on tex
    
 For the prototype purpose, we are not training model on the fly. So currently it's calling models directly from the local directory (but scripts to run these are in scripts.py)   
 
-For this prototype purpose, directory structure is as below...   
+For this model to run, directory structure should be set up as below...   
 
 ```bash
-├── 001.EDA.ipynb (explains the overall model building process)
-├── README.md
 ├── api
 │   ├── api.py (contains python api)   
 │   └── scripts.py (contains all processing functions)   
