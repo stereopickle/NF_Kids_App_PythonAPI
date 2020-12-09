@@ -1,4 +1,9 @@
+
+api/__pycachs__/
+.pyc
+/model/
 /database/
 /data/
 .ipynb_checkpoints/
 .DS_Store
+api/__pycache__/scripts.cpython-37.pyc
