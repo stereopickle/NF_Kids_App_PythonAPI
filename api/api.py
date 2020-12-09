@@ -16,19 +16,22 @@ import pandas as pd
 from scripts import preprocess, identify_symptom, return_symptom_id
 from scripts import high_corr_target, return_names
 
+# defining api
+app = Flask(__name__)
+app.config["DEBUG"] = True
 
-"""
-## retrieving necessary data from the database  
-When we actively send update back to database, we need to call
 
-1. id, name from symptoms table
-2. full symptom_relations table
-
-For now, I'll directly call the files.
 
 """
 
+/logresult takes the text, figures out what NF1 related symptoms are present
+then return these symptoms and highly correlated potential conditions.
+    
 """
+
+"""
+# Update once database connection is established. 
+
 db_connect = create_engine('DATABASE LOCATION')
 
 class Symptoms(Resource):
@@ -44,40 +47,29 @@ class Symptoms_Relation(Resource):
         q = conn.execute("SELECT * FROM symptoms_relation;")
         result = {'data': [dict(zip(tuple (q.keys()) ,i)) for i in q.cursor]}
         return jsonify(result)
-"""
-
-
-# defining api
-app = Flask(__name__)
-app.config["DEBUG"] = True
-
-
-
 
 """
-/logresult takes the text, figures out what NF1 related symptoms are present
-then return these symptoms and highly correlated potential conditions.
 
-For the prototype, we won't send the extracted symptoms back to database
-Instead we will just output the symptom and target condition
-to the front-end.
-    
-"""
 
 @app.route('/logresult', methods = ['POST'])
 def logresult():
+    """
+    takes 'log' (string) and 
+    returns 
+        'identified_symptoms' 
+        'targets' 
+    """
     if model: 
         try: 
             input_ = request.json
             text = input_[0]['log']
-            #text_input = preprocess(text)
             result = identify_symptom(text, symptom_vectors, model)
             result_symptom_id = return_symptom_id(result, Symptoms)
             target = high_corr_target(result_symptom_id, 
                                       Symptoms_Relation)
             output = return_names(target, Symptoms)
             
-            return jsonify({ 'estimated_symptoms': result, 'targets': output })
+            return jsonify({ 'identified_symptoms': result, 'targets': output })
         
         except:
             return jsonify({'trace': traceback.format_exc()})
