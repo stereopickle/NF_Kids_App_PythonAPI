@@ -7,3 +7,4 @@ api/__pycachs__/
 .ipynb_checkpoints/
 .DS_Store
 api/__pycache__/scripts.cpython-37.pyc
+target_symptom_vector_keys.pkl
