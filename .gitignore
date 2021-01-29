@@ -10,3 +10,5 @@ api/__pycache__/scripts.cpython-37.pyc
 target_symptom_vector_keys.pkl
 symptom_vectors
 ARCHIVE/101.Test_Data.ipynb
+scripts/__pycache__/Symptom_Identifier.cpython-37.pyc
+scripts/__pycache__/__init__.cpython-37.pyc
